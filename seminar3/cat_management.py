@@ -20,15 +20,30 @@ from domain import (create_cat)
 from seminar3.service import perform_undo
 from seminar3.tests import test_add_cat, test_update_cat, test_get_races, test_get_cats_by_race, test_group_by_race, \
     test_save_state
+from seminar3.validation import validate_string
 
 from service import group_cats_by_race, add_cat, update_cat, save_state
 
+def read_valid_int(message):
+    while True:
+        try:
+            return int(input(message))
+        except ValueError:
+            print("Invalid value! Try again")
+
+def read_valid_string(message):
+    while True:
+        try:
+            value= input(message)
+            validate_string(value)
+            return value
+        except Exception:
+            print("Invalid value! Try again")
 
 def read_cat():
-    name = input("Enter name: ")
-    race = input("Enter race: ")
-    # TODO: proper validation needs to be done
-    weight = int(input("Enter weight: "))
+    name = read_valid_string("Enter name: ")
+    race = read_valid_string("Enter race: ")
+    weight = read_valid_int("Enter weight: ")
     return create_cat(name, race, weight)
 
 
