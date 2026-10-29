@@ -19,6 +19,7 @@ def update_cat(cats, new_cat):
     for cat in cats:
         if get_name(cat) == get_name(new_cat):
             found_cat = cat
+
     if found_cat is None:
         raise ValueError(f"Cat named {get_name(new_cat)} not found")
 
@@ -63,3 +64,20 @@ def group_cats_by_race(cats):
         cat_names = [get_name(cat) for cat in cats_of_race]
         result[race] = cat_names
     return result
+
+
+def save_state(undo_stack:list, cats:list):
+    copied_cats = []
+    for cat in cats:
+        copied_cats.append(cat.copy())
+    undo_stack.append(copied_cats)
+
+def perform_undo(undo_stack:list, cats:list):
+    if not undo_stack:
+        raise ValueError("Nothing to undo!")
+    last_state = undo_stack.pop()
+    cats[:] = last_state
+
+
+
+

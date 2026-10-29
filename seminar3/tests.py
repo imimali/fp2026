@@ -1,6 +1,11 @@
 from domain import (create_cat)
-
-from service import group_cats_by_race, get_cats_by_race, add_cat, update_cat, get_races
+from copy import deepcopy
+from service import (group_cats_by_race,
+                     get_cats_by_race,
+                     add_cat,
+                     update_cat,
+                     get_races,
+                     save_state)
 
 
 def test_get_cats_by_race():
@@ -67,3 +72,30 @@ def test_update_cat():
     cat2 = create_cat("bober", "gray", 5000)
     update_cat(test_cats, cat2)
     assert test_cats[0] == cat2
+
+def test_save_state():
+    test_cats = []
+    test_undo_stack = []
+    save_state(test_undo_stack, test_cats)
+    assert test_undo_stack == [[]]
+    prev_undo_stack = deepcopy(test_undo_stack)
+
+    cat = create_cat("bober", "orange", 3500)
+    add_cat(test_cats, cat)
+    save_state(test_undo_stack, test_cats)
+    #assert test_undo_stack == [[],[cat]]
+    expected = deepcopy(prev_undo_stack)
+    expected.append(deepcopy(test_cats))
+    assert test_undo_stack == expected
+    prev_undo_stack = deepcopy(test_undo_stack)
+
+    cat2 = create_cat("bober", "orange2", 3700)
+    update_cat(test_cats, cat2)
+    save_state(test_undo_stack, test_cats)
+    expected = deepcopy(prev_undo_stack)
+    expected.append(deepcopy(test_cats))
+    assert test_undo_stack == expected
+
+
+
+
