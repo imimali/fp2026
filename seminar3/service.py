@@ -5,6 +5,7 @@ from domain import (get_race,
                     set_race)
 
 def add_cat(cats: list, cat):
+    # TODO verify uniqueness of name or introduce ids
     cats.append(cat)
 
 
@@ -36,7 +37,7 @@ def get_races(cats):
     return set(all_races)
 
 
-def get_cats_by_race(cats, race):
+def get_cats_by_race(cats, race) -> list:
     # return list(filter,lambda cat:get_race(cat)==race,cats)
     # return [cat for cat in cats if get_race(cat)==race]
     filtered = []
@@ -44,6 +45,41 @@ def get_cats_by_race(cats, race):
         if get_race(cat) == race:
             filtered.append(cat)
     return filtered
+
+def average_weight(cats):
+    if not cats:
+        return 0.0
+    weights = []
+    for cat in cats:
+        weights.append(get_weight(cat))
+    return sum(weights)/len(weights)
+
+def get_top_k_races(cats,k=3):
+    races = get_races(cats)
+    nr_cats_by_race = {}
+    for race in races:
+        nr_cats = len(get_cats_by_race(cats, race))
+        nr_cats_by_race[race] = nr_cats
+
+    # def get_nr(race):
+    #     return nr_cats_by_race[race]
+    # sorted_races = sorted(nr_cats_by_race.keys(), key=get_race,reverse=True)
+    sorted_races = sorted(nr_cats_by_race.keys(),
+                          key=lambda r:[nr_cats_by_race[r],r],
+                          reverse=True)
+    return sorted_races[:k]
+
+
+def average_weight_for_top_k_races(cats, k=3):
+    top_k_races = get_top_k_races(cats,k)
+    result = {}
+    for race in top_k_races:
+        cats_of_race = get_cats_by_race(cats,race)
+        result[race]= average_weight(cats_of_race)
+    return result
+
+
+
 
 
 def group_cats_by_race(cats):

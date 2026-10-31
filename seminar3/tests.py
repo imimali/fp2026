@@ -5,7 +5,7 @@ from service import (group_cats_by_race,
                      add_cat,
                      update_cat,
                      get_races,
-                     save_state)
+                     save_state, average_weight, get_top_k_races, average_weight_for_top_k_races)
 
 
 def test_get_cats_by_race():
@@ -73,6 +73,7 @@ def test_update_cat():
     update_cat(test_cats, cat2)
     assert test_cats[0] == cat2
 
+
 def test_save_state():
     test_cats = []
     test_undo_stack = []
@@ -83,7 +84,7 @@ def test_save_state():
     cat = create_cat("bober", "orange", 3500)
     add_cat(test_cats, cat)
     save_state(test_undo_stack, test_cats)
-    #assert test_undo_stack == [[],[cat]]
+    # assert test_undo_stack == [[],[cat]]
     expected = deepcopy(prev_undo_stack)
     expected.append(deepcopy(test_cats))
     assert test_undo_stack == expected
@@ -97,5 +98,59 @@ def test_save_state():
     assert test_undo_stack == expected
 
 
+def test_average_weight():
+    cats = []
+    assert average_weight(cats) == .0
+    cats = [create_cat("bober", "orange", 3500)]
+    assert average_weight(cats) == 3500
+    cats.append(create_cat("bober", "orange", 3500))
+    assert average_weight(cats) == 3500
+    cats.append(create_cat("bober", "orange", 2000))
+    assert average_weight(cats) == 3000
 
 
+def test_top_k_races():
+    cats = []
+    assert get_top_k_races(cats) == []
+    cats = [create_cat("bober", "orange", 3500)]
+    assert get_top_k_races(cats) == ["orange"]
+
+    cats = [
+        create_cat("bober", "orange", 3500),
+        create_cat("bober", "red", 3500),
+        create_cat("bober", "white", 3500),
+    ]
+
+    assert get_top_k_races(cats) == ["white", "red", "orange"]
+
+    cats = [
+        create_cat("bober", "orange", 3500),
+        create_cat("bober", "orange", 3500),
+        create_cat("bober", "red", 3500),
+        create_cat("bober", "white", 3500),
+    ]
+
+    assert get_top_k_races(cats) == ["orange", "white", "red", ]
+
+
+def test_average_weight_of_top_k_races():
+    cats = []
+    assert average_weight_for_top_k_races(cats) == {}
+    cats = [create_cat("bober", "orange", 3500)]
+    assert average_weight_for_top_k_races(cats) == {"orange": 3500}
+    #
+    cats = [
+        create_cat("bober", "orange", 3500),
+        create_cat("bober", "red", 3500),
+        create_cat("bober", "white", 3500),
+    ]
+    assert average_weight_for_top_k_races(cats) == {"orange": 3500, "red": 3500, "white": 3500}
+    #
+    cats = [
+        create_cat("bober", "orange", 3500),
+        create_cat("bober", "orange", 4500),
+        create_cat("bober", "red", 3500),
+        create_cat("bober", "white", 3500),
+    ]
+    #
+    assert average_weight_for_top_k_races(cats) == {"orange":4000,"white":3500, "red":3500}

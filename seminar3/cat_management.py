@@ -15,11 +15,14 @@ cats = [cat], undo_stack = [[]]
 cats = [cat'], undo_stack = [[],[cat]]
 ... undo
 cat = [cat], undo_stack = [[]]
+
+Get the average weight for each of the top
+3 most popular (with the most individuals) races
 """
 from domain import (create_cat)
 from seminar3.service import perform_undo
 from seminar3.tests import test_add_cat, test_update_cat, test_get_races, test_get_cats_by_race, test_group_by_race, \
-    test_save_state
+    test_save_state, test_average_weight, test_top_k_races, test_average_weight_of_top_k_races
 from seminar3.validation import validate_string
 
 from service import group_cats_by_race, add_cat, update_cat, save_state
@@ -104,4 +107,8 @@ if __name__ == '__main__':
     test_get_cats_by_race()
     test_group_by_race()
     test_save_state()
+
+    test_average_weight()
+    test_top_k_races()
+    test_average_weight_of_top_k_races()
     run()
