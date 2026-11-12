@@ -24,3 +24,5 @@ def set_race(cat, race):
 
 def set_weight(cat, weight):
     cat['weight'] = weight
+
+print("aaahbasdfjhkgasdfjhkgasdfsdfgsdfj",__name__)

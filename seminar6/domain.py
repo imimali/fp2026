@@ -47,7 +47,7 @@ class Cat:
     def __eq__(self, value: object, /) -> bool:
         return self.__id == value.__id # TODO fix this
 
-    def __add__(self, other:Cat):
+    def __add__(self, other: Cat):
         first_half = self.__race[:len(self.__race)//2]
         second_half = other.__race[len(other.__race)//2:]
         return Cat(f"({self.get_name()+' + '+other.get_name()})",first_half+second_half,100)# for i in range(7)]
