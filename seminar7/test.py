@@ -4,22 +4,22 @@ from seminar7.validator import CatValidator, ValidationError
 from service import CatService
 def test_repo_add():
     repo = Repository()
-    cat = Cat("aa","black",1233)
+    cat = Cat(1,"aa","black",1233)
     repo.add(cat)
     assert repo.get_all() == [cat]
 
 def test_service_add():
     repo = Repository()
     service = CatService(repo)
-    service.add("aa","black",1233)
+    service.add(1, "aa","black",1233)
     assert repo.get_all()[0].get_name() == "aa"
     ...
 
 def test_cat_validator():
-    cat = Cat("aaa","orange",1234)
+    cat = Cat(1,"aaa","orange",1234)
     CatValidator.validate(cat)
     try:
-        CatValidator.validate(Cat("","black",1255))
+        CatValidator.validate(Cat(1,"","black",1255))
         assert False, "Exception should have been thrown"
     except ValidationError as e:
         assert str(e)== "Name cannot be void"
@@ -30,10 +30,10 @@ def test_repo_filter_by_weight():
 
     assert repo.filter_by_weight(100012313) == []
 
-    cat = Cat("aa", "black", 500)
-    cat1 = Cat("aa1", "orange", 233)
-    cat2 = Cat("aa2", "tabbi", 1000)
-    cat3 = Cat("aa3", "british", 100_000)
+    cat = Cat(1,"aa", "black", 500)
+    cat1 = Cat(2,"aa1", "orange", 233)
+    cat2 = Cat(3,"aa2", "tabbi", 1000)
+    cat3 = Cat(4,"aa3", "british", 100_000)
     for c in [cat,cat1,cat2, cat3]:
         repo.add(c)
     assert repo.filter_by_weight(501) == [cat, cat1]
@@ -45,10 +45,10 @@ def test_service_filter_by_weight():
     service = CatService(repo)
     assert service.filter_by_weight(100012313) == []
 
-    cat = Cat("aa", "black", 500)
-    cat1 = Cat("aa1", "orange", 233)
-    cat2 = Cat("aa2", "tabbi", 1000)
-    cat3 = Cat("aa3", "british", 100_000)
+    cat = Cat(1, "aa", "black", 500)
+    cat1 = Cat(2, "aa1", "orange", 233)
+    cat2 = Cat(3, "aa2", "tabbi", 1000)
+    cat3 = Cat(4, "aa3", "british", 100_000)
     for c in [cat,cat1,cat2, cat3]:
         repo.add(c)
     assert service.filter_by_weight(501) == [cat, cat1]

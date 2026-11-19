@@ -1,18 +1,18 @@
 from seminar7.domain import Cat
-from seminar7.repository import Repository
+from seminar7.repository import Repository, FileRepository, FoodRepository, PreferenceRepository, FoodFileRepository, \
+    PreferenceFileRepository
 from seminar7.test import test_all
-from seminar7.service import CatService
+from seminar7.service import CatService, FoodService, PreferenceService
 from seminar7.ui import UI
+
 if __name__ == '__main__':
     test_all()
 
-    repo = Repository()
-    repo.add(Cat("aaa","black",1233))
-    repo.add(Cat("aaa1","orange",455))
-    repo.add(Cat("aaa2","black",111))
-    repo.add(Cat("aaa3","tabbi",1233))
-    repo.add(Cat("aaa4","british",678))
-    repo.add(Cat("aaa5","black",567))
-    service = CatService(repo)
-    ui = UI(service)
+    cat_repo = FileRepository('cats.txt')
+    food_repo = FoodFileRepository('foods.txt')
+    preference_repo = PreferenceFileRepository('preferences.txt')
+    cat_service = CatService(cat_repo)
+    food_service = FoodService(food_repo)
+    preference_service = PreferenceService(preference_repo, cat_repo, food_repo)
+    ui = UI(cat_service, food_service, preference_service)
     ui.run()
