@@ -1,0 +1,4 @@
+1,lea,tabbi,1500
+2,rocky,black,2000
+3,giacomino guardiano delle galassie e dell'iperspazio,british,2000
+4,pimpi,aaaaa,4500
